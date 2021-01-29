@@ -1,8 +1,13 @@
 const axios = require('axios')
 
+const travelModes = ['driving', 'walking', 'bicycling', 'transit']
+
 module.exports =
-    async function getDistanceAndTravelTime(fromPlaceId, toPlaceId, apiKey) {
-        const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=place_id:${fromPlaceId}&destinations=place_id:${toPlaceId}&key=${apiKey}`
+    async function getDistanceAndTravelTime(fromPlaceId, toPlaceId, apiKey, travelMode = 'driving') {
+
+        if (!validateTravelMode(travelMode)) return {status: 'Failed', error: 'Invalid travel mode'}
+
+        const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=place_id:${fromPlaceId}&destinations=place_id:${toPlaceId}&mode=${travelMode}&key=${apiKey}`
 
         try {
             let apiResponse = await axios.get(url)
@@ -16,11 +21,10 @@ module.exports =
 
             return {status: 'Failed', error: apiResponse.data.error_message}
         } catch (error) {
-            if (error.response.data.status === 'INVALID_REQUEST')
-                throw new Error(error.response.data.error_message)
-
             throw new Error(error.response)
         }
     }
 
-
+function validateTravelMode(mode) {
+    return travelModes.includes(mode);
+}

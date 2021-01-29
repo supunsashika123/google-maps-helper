@@ -1,5 +1,9 @@
 {
-  "name": "@supunsashika/test",
+  "name": "@supunsashika/google-maps-helper",
+  "author": {
+    "name": "Supun Sashika",
+    "email": "supun.eternal@gmail.com"
+  },
   "version": "1.0.0",
   "dependencies": {
     "axios": "^0.21.1"
